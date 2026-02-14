@@ -1,0 +1,11 @@
+name = "discord-timestamp"
+main = "src/index.js"
+compatibility_date = "2024-01-01"
+
+[[kv_namespaces]]
+binding = "TIMEZONE_KV"
+id = "c34c395954214d1cb7f37d2e62c37aa9"
+
+[[kv_namespaces]]
+binding = "CULTURE_KV"
+id = "17d58837ebc84932b9a9572492b39ba1"
