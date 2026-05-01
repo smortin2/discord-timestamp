@@ -1,3 +1,4 @@
+// src/register-commands.js
 const APP_ID = process.env.DISCORD_APP_ID;
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
 const GUILD_ID = process.env.GUILD_ID || null;
@@ -15,45 +16,39 @@ const AUTH_HEADERS = {
 const COMMANDS = [
     {
         name: "time",
-        description: "Convert a time into a Discord timestamp that displays in everyone's local timezone",
+        description: "Convert a time into a Discord timestamp using your saved offset",
         options: [
             {
                 name: "time",
                 description: "The time to convert (e.g. 2:30PM, 14:30, 9:00 AM)",
-                type: 3,
+                type: 3, // String
                 required: true,
             },
             {
                 name: "date",
                 description: "Optional date (e.g. 3/15, 2024-12-25). Defaults to next occurrence if no year given.",
-                type: 3,
+                type: 3, // String
                 required: false,
-            },
-            {
-                name: "timezone",
-                description: "One-time timezone override (e.g. America/New_York, EST, UTC-5). See /timesetzone.",
-                type: 3,
-                required: false,
-            },
+            }
         ],
     },
     {
-        name: "timesetzone",
-        description: "Set your default timezone for /time",
+        name: "timesetcurrent",
+        description: "Set your timezone by telling the bot what time it currently is on your clock",
         options: [
             {
-                name: "timezone",
-                description: "IANA name (America/New_York), abbreviation (EST), or offset (UTC-5)",
-                type: 3,
+                name: "time",
+                description: "Your exact current local time (e.g. 2:17PM)",
+                type: 3, // String
                 required: true,
-            },
-            {
-                name: "index",
-                description: "If an abbreviation matches multiple timezones, pick which one (e.g. 2 for the 2nd match)",
-                type: 4,
-                required: false,
-            },
+            }
         ],
+    },
+    {
+        name: "timecheckoffset",
+        description: "Check your currently saved time and offset",
+        // No options needed for this command
+        options: [],
     },
     {
         name: "timesetculture",
@@ -61,8 +56,8 @@ const COMMANDS = [
         options: [
             {
                 name: "culture",
-                description: "Locale code: en-US (M/D/Y), en-GB (D/M/Y), ja-JP (Y/M/D), etc.",
-                type: 3,
+                description: "Locale code: en-US, en-GB, ja-JP, etc.",
+                type: 3, // String
                 required: true,
             },
         ],

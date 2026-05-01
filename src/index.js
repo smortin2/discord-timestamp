@@ -1,11 +1,13 @@
-import {
-    INTERACTION_TYPE_PING,
-    INTERACTION_TYPE_APPLICATION_COMMAND,
-    RESPONSE_TYPE_PONG,
-} from "./constants.js";
+// src/index.js
+import { INTERACTION_TYPE_PING, INTERACTION_TYPE_APPLICATION_COMMAND, RESPONSE_TYPE_PONG } from "./constants.js";
 import { verifyDiscordRequest } from "./verify.js";
 import { jsonResponse, errorResponse } from "./responses.js";
-import { handleTimeCommand, handleSetTimezoneCommand, handleSetCultureCommand } from "./commands.js";
+import {
+    handleTimeCommand,
+    handleSetCurrentCommand,
+    handleCheckOffsetCommand,
+    handleSetCultureCommand
+} from "./commands.js";
 
 export default {
     async fetch(request, env) {
@@ -14,14 +16,10 @@ export default {
         const CULTURE_KV = env.CULTURE_KV;
 
         try {
-            if (request.method !== "POST") {
-                return errorResponse("Only POST requests are accepted.");
-            }
+            if (request.method !== "POST") return errorResponse("Only POST requests are accepted.");
 
             const { isValid, body } = await verifyDiscordRequest(request, DISCORD_PUBLIC_KEY);
-            if (!isValid) {
-                return errorResponse("Invalid request signature.");
-            }
+            if (!isValid) return errorResponse("Invalid request signature.");
 
             const interaction = JSON.parse(body);
 
@@ -33,8 +31,10 @@ export default {
                 switch (interaction.data.name) {
                     case "time":
                         return await handleTimeCommand(interaction, TIMEZONE_KV, CULTURE_KV);
-                    case "timesetzone":
-                        return await handleSetTimezoneCommand(interaction, TIMEZONE_KV);
+                    case "timesetcurrent":
+                        return await handleSetCurrentCommand(interaction, TIMEZONE_KV);
+                    case "timecheckoffset":
+                        return await handleCheckOffsetCommand(interaction, TIMEZONE_KV);
                     case "timesetculture":
                         return await handleSetCultureCommand(interaction, CULTURE_KV);
                     default:
