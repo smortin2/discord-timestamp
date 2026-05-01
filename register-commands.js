@@ -1,12 +1,8 @@
 // src/register-commands.js
 const APP_ID = process.env.DISCORD_APP_ID;
 const BOT_TOKEN = process.env.DISCORD_BOT_TOKEN;
-const GUILD_ID = process.env.GUILD_ID || null;
 const API_BASE = "https://discord.com/api/v10";
 const GLOBAL_ENDPOINT = `${API_BASE}/applications/${APP_ID}/commands`;
-const GUILD_ENDPOINT = GUILD_ID
-    ? `${API_BASE}/applications/${APP_ID}/guilds/${GUILD_ID}/commands`
-    : null;
 
 const AUTH_HEADERS = {
     Authorization: `Bot ${BOT_TOKEN}`,
@@ -47,7 +43,6 @@ const COMMANDS = [
     {
         name: "timecheckoffset",
         description: "Check your currently saved time and offset",
-        // No options needed for this command
         options: [],
     },
     {
@@ -109,13 +104,7 @@ async function registerToEndpoint(endpoint, label) {
 async function main() {
     console.log("Registering global commands...");
     await registerToEndpoint(GLOBAL_ENDPOINT, "GLOBAL");
-
-    if (GUILD_ENDPOINT) {
-        console.log(`Registering guild commands for ${GUILD_ID}...`);
-        await registerToEndpoint(GUILD_ENDPOINT, "GUILD");
-    } else {
-        console.log("No GUILD_ID set, skipping guild registration.");
-    }
+    console.log("Global command registration complete!");
 }
 
 main();
